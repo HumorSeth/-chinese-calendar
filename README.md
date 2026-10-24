@@ -90,7 +90,7 @@ independent per-day events, e.g. `Chinese New Year (Day 1)` ~ `(Day 14)` and
 
 ## Usage
 
-**Subscribe (recommended; requires a paid Tuta plan)**: desktop client or
+**Subscribe (recommended)**: desktop client or
 mobile app → next to *Your Calendars* in the calendar sidebar, click `＋` →
 *From URL* → paste the public URL of the .ics → *Subscribe*. Subscribed
 calendars are read-only, fetched periodically by Tuta's servers, and alarms
@@ -107,7 +107,7 @@ use the same URL.
 ## Deployment (getting a public subscription URL)
 
 The URL must be publicly reachable without login (Tuta's servers fetch it).
-The `site/` directory is the deployment bundle; pick one of three options:
+The `site/` directory is the deployment bundle
 
 1. **GitHub**: upload the files from `site/` to a public repo via the web UI,
    then use the raw link or
