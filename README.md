@@ -1,6 +1,6 @@
 # Chinese Holidays & Solar Terms ICS Calendar (2026–2100)
 
-[中文](README.cn.md) | English
+[中文](README.md) | English
 
 A ready-to-subscribe / ready-to-import iCalendar (.ics) dataset covering
 **2026-01-01 through 2100-12-31**, with **3,900 all-day events**, all named in
