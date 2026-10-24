@@ -151,5 +151,3 @@ was therefore not used (its role is covered by lunardate + cnlunar + HKO).
   (this repo uses their per-year `T{year}e.txt` text tables)
 - Python libraries: `pyephem` (positional astronomy), `lunardate` /
   `cnlunar` (Chinese lunar calendar), `icalendar` (RFC 5545 parsing checks)
-
-The generated files are free to use and redistribute.
