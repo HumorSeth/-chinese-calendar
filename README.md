@@ -74,9 +74,9 @@
 
 ## 使用方法
 
-**订阅（推荐，需 Tuta 付费版）**：桌面客户端或手机 App →
+**订阅（推荐）**：桌面客户端或手机 App →
 日历左侧 Your Calendars 旁 `＋` → `From URL` → 粘贴 .ics 的公网 URL →
-`Subscribe`。订阅日历只读，由 Tuta 服务器定期抓取；外部日历的提醒不同步。
+`Subscribe`。订阅日历只读
 
 **导入（免费版可用）**：网页版/桌面客户端 → 目标日历右侧 `⋯` →
 `Import` → 选择 .ics 文件。建议导入到专用日历（Tuta 无批量删除事件功能）；
@@ -124,5 +124,3 @@ wheel，故未采用（功能已由 lunardate + cnlunar + HKO 三方覆盖）。
   （本仓库使用其 `T{year}e.txt` 逐年文本表）
 - Python 库：`pyephem`（天文历算）、`lunardate` / `cnlunar`（农历）、
   `icalendar`（RFC 5545 解析验证）
-
-生成物可自由使用与再分发。
