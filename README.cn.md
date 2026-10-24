@@ -126,5 +126,3 @@ wheel，故未采用（功能已由 lunardate + cnlunar + HKO 三方覆盖）。
   （本仓库使用其 `T{year}e.txt` 逐年文本表）
 - Python 库：`pyephem`（天文历算）、`lunardate` / `cnlunar`（农历）、
   `icalendar`（RFC 5545 解析验证）
-
-生成物可自由使用与再分发。
