@@ -1,153 +1,187 @@
-# Chinese Holidays & Solar Terms ICS Calendar (2026–2100)
+# China & US Holidays ICS Calendars (2026–2100)
 
 [中文](README.cn.md) | English
 
-A ready-to-subscribe / ready-to-import iCalendar (.ics) dataset covering
-**2026-01-01 through 2100-12-31**, with **3,900 all-day events**, all named in
-**plain English** (the file contains no Chinese characters). It complies with
-RFC 5545 and is tailored for **Tuta Calendar**'s importer and subscription
-feature (no recurrence rules, deterministic UIDs, pure ASCII, CRLF).
+Two ready-to-import / ready-to-subscribe iCalendar datasets covering
+**2026-01-01 through 2100-12-31**: one for China, one for the United States.
+Every event is a **single all-day event** with a **plain-English** name — neither
+file contains a single non-ASCII byte — and both follow RFC 5545 and are tuned
+for **Tuta Calendar**'s importer and URL-subscription features: no recurrence
+rules, deterministic UIDs, pure ASCII, CRLF line endings, lines folded at 75 octets.
 
-Every date was computed by actually running a program and cross-checked
-day-by-day against the official Hong Kong Observatory tables; the 2026 dates
-match the *Notice of the General Office of the State Council on the 2026
-Holiday Arrangement* item by item.
+Every date is derived from the rule, never typed in by hand, and then
+cross-checked against an independent implementation.
 
-## Contents & Statistics
+## Calendars at a glance
 
-| Category (CATEGORIES) | Contents | Events |
+| File | Events | Categories (`CATEGORIES`) | Events per year |
+|---|---|---|---|
+| `chinese-holidays-2026-2100.ics` | 3,900 | `Public Holiday` 1,650 · `Traditional Festival` 450 · `Solar Term` 1,800 | 51–53 |
+| `us-holidays-2026-2100.ics` | 1,835 | `US Federal Holiday` 1,160 · `US Traditional Holiday` 675 | 23–27 |
+
+Both files span the same 75 Gregorian years (2026–2100). Multi-day breaks are
+split into one event per day — `Chinese New Year (Day 1)` … `(Day 14)`,
+`National Day (Day 1)` … `(Day 3)`, `Thanksgiving Day (Day 1)` … `(Day 4)` —
+while single-day holidays carry no suffix.
+
+## Chinese calendar — what's inside
+
+| Category | Contents | Events |
 |---|---|---|
-| Public Holiday | New Year's Day; Chinese New Year (lunar month 1, days 1–14, split as Day 1–14); Qingming Festival; Labor Day; Dragon Boat Festival; Mid-Autumn Festival; National Day (Oct 1–3, split as Day 1–3) | 1650 |
-| Traditional Festival | Chinese New Year's Eve, Lantern Festival, Qixi Festival, Zhongyuan Festival, Double Ninth Festival, Laba Festival | 450 |
-| Solar Term | The 24 solar terms with standard English names (Beginning of Spring / Spring Equinox / White Dew …) | 1800 |
-| **Total** | 52 events per Gregorian year (Laba Festival occurs twice in a few years and not at all in the next one; the total is unchanged) | **3900** |
+| `Public Holiday` | New Year's Day; Chinese New Year (lunar month 1, days 1–14); Qingming Festival; Labor Day; Dragon Boat Festival; Mid-Autumn Festival; National Day (Oct 1–3) | 1,650 |
+| `Traditional Festival` | Chinese New Year's Eve, Lantern Festival, Qixi Festival, Zhongyuan Festival, Double Ninth Festival, Laba Festival | 450 |
+| `Solar Term` | The 24 solar terms with their standard English names (Beginning of Spring, Spring Equinox, White Dew …) | 1,800 |
 
-Single-day holidays carry no "Day N" suffix; multi-day breaks are split into
-independent per-day events, e.g. `Chinese New Year (Day 1)` ~ `(Day 14)` and
-`National Day (Day 1)` ~ `(Day 3)`.
+52 events per Gregorian year on average — the Laba Festival occasionally occurs
+twice in one Gregorian year and not at all in the next, so the per-year count
+varies between 51 and 53 while the 75-year total stays fixed.
 
-## Files
+## US calendar — what's inside
 
-| File | Description |
+| Category | Contents | Events |
+|---|---|---|
+| `US Federal Holiday` | New Year's Day; Martin Luther King Jr. Day; Presidents' Day; Memorial Day; Juneteenth; Independence Day; Labor Day; Columbus Day; Veterans Day; Thanksgiving Day (Day 1–4); Christmas Day — plus an `(Observed)` event whenever a fixed-date holiday lands on a weekend | 1,160 |
+| `US Traditional Holiday` | Valentine's Day, St. Patrick's Day, Good Friday, Easter Sunday, Mother's Day, Father's Day, Halloween, Christmas Eve, New Year's Eve | 675 |
+
+### US federal holiday rules
+
+| Holiday | Rule |
 |---|---|
-| `chinese-holidays-and-solar-terms-2026-2100.ics` | Full file (3,900 events, 774 KB) |
-| `cn-holidays-2026-2100.ics` | Public holidays only (1650) |
-| `cn-traditional-festivals-2026-2100.ics` | Traditional festivals only (450) |
-| `cn-solar-terms-2026-2100.ics` | Solar terms only (1800) |
-| `chinese-calendar-events-2026-2100.csv` | Day-by-day audit list of all events (date / summary / category / uid) |
-| `gen_cn_calendar.py` | Generator script: computes all dates, runs every check, writes the ICS and CSV |
-| `hko/T2026e.txt … T2100e.txt` | Hong Kong Observatory Gregorian–Lunar conversion tables (2026–2100, the cross-validation baseline) |
-| `site/` | Deployment bundle (the files above plus a landing page — see "Deployment") |
+| New Year's Day | January 1 |
+| Martin Luther King Jr. Day | 3rd Monday of January |
+| Presidents' Day (Washington's Birthday) | 3rd Monday of February |
+| Memorial Day | Last Monday of May |
+| Juneteenth | June 19 |
+| Independence Day | July 4 |
+| Labor Day | 1st Monday of September |
+| Columbus Day | 2nd Monday of October |
+| Veterans Day | November 11 |
+| Thanksgiving Day | 4th Thursday of November (Fri–Sun follow as Day 2–4) |
+| Christmas Day | December 25 |
 
-## How the Dates Were Computed (nothing from memory)
+**Observed rule** (5 U.S.C. § 6103): a holiday falling on Saturday is observed
+the preceding Friday, one falling on Sunday the following Monday. The statutory
+date always keeps its own event and the shifted date gets a separate
+`(Observed)` event, so both appear on the calendar. That produces one event that
+sits outside its own year: `New Year's Day (Observed)` on 2100-12-31 belongs to
+1 January 2101.
 
-- **24 solar terms**: `pyephem` bisects the Sun's **apparent ecliptic longitude
-  referred to the equinox of date** to the exact instant it reaches each
-  multiple of 15°; the instant is converted to UTC+8 and the Beijing calendar
-  date is taken. Key detail: you must call `sun.compute(date, epoch=date)` to
-  reduce to the equinox of date; using the J2000 ecliptic instead introduces a
-  precession error of about 0.36° (≈ 9 hours), which pushes many solar terms
-  one day late.
-- **Lunar festivals**: the `lunardate` library (its tables derive from the
-  Hong Kong Observatory). The 14 Chinese New Year days are lunar month 1,
-  days 1–14; Chinese New Year's Eve is the day before the next CNY (correct
-  whether the 12th lunar month has 29 or 30 days).
-- **Lunar year 2100**: `lunardate`'s tables end at 2099 and `cnlunar`'s at
-  mid-2100, so lunar year 2100 (including CNY on 2100-02-09 and the Eve on
-  2100-02-08) is derived directly from the HKO table.
-- **Cross-validation**: every lunar date is checked across `lunardate` ↔
-  `cnlunar` ↔ HKO; every solar term date is checked across `pyephem` ↔ HKO.
+## Verification
 
-### Verification results
+**US calendar**
 
-- All 2,000+ lunar dates agree across all three sources (including 2033's
-  leap 11th month and 2061's leap 3rd month; HKO marks leap months by
-  repeating the month ordinal).
-- Of the 1,800 solar term dates, 1,788 are identical between `pyephem` and
-  HKO. In the remaining 12, the `pyephem` instant falls within 10 minutes
-  before midnight (e.g. Major Cold 2082 at 23:59:46) — an inherent
-  uncertainty of long-term ΔT prediction; **the published HKO dates are
-  adopted** (`cnlunar`'s independent computation sides with HKO as well).
-- The 2026 anchors match the State Council notice: CNY 2/17, Eve 2/16,
-  Qingming 4/5, Dragon Boat 6/19, Mid-Autumn 9/25, National Day 10/1–10/3.
-- HKO's own `T2069e.txt` is missing the row for 2069-12-30 (not a solar term
-  nor any festival day; no impact).
+- All 9 rule-based holidays were recomputed with `dateutil.rrule` (an
+  independent RRULE expansion) across all 75 years: **0 differences**.
+- Easter and Good Friday were recomputed with `dateutil.easter` (anonymous
+  Gregorian computus): **0 differences**; Good Friday is always Easter − 2 days.
+- Observed-date events were counted against a separately written rule:
+  New Year's Day 22, Juneteenth 22, Independence Day 23, Veterans Day 21,
+  Christmas Day 22 — exact match, including the cross-year case above.
+- Thanksgiving: all 75 years have exactly 4 consecutive events starting on the
+  4th Thursday of November.
+- File parsed with `icalendar` 7.3: 1,835 events, unique UIDs, every event an
+  all-day `DATE` value, no line longer than 75 octets, file ends with
+  `END:VCALENDAR`.
+
+2026 anchors (US): MLK Day 1/19, Presidents' Day 2/16, Memorial Day 5/25,
+Juneteenth 6/19 (Fri), Independence Day 7/4 (Sat) + observed 7/3, Labor Day 9/7,
+Columbus Day 10/12, Veterans Day 11/11, Thanksgiving 11/26–11/29, Christmas 12/25.
+
+**Chinese calendar**
+
+- 2026 anchors match the State Council notice item by item: Chinese New Year
+  2/17, New Year's Eve 2/16, Qingming 4/5, Dragon Boat 6/19, Mid-Autumn 9/25,
+  National Day 10/1–10/3.
+- 2,000+ lunar dates agree across `lunardate` ↔ `cnlunar` ↔ Hong Kong
+  Observatory tables (including 2033's leap 11th month and 2061's leap 3rd month).
+- 1,788 of 1,800 solar-term dates match the HKO tables exactly; in the remaining
+  12 the astronomical instant falls within 10 minutes of midnight (e.g. Major
+  Cold 2082 at 23:59:46) — inherent long-term ΔT uncertainty, so the published
+  HKO date is adopted.
 
 ## ICS format specification
 
-- `CALSCALE:GREGORIAN` / `VERSION:2.0` / `PRODID` / `METHOD:PUBLISH`
-- All-day events `DTSTART;VALUE=DATE:YYYYMMDD`, no `TZID`, no `VTIMEZONE`, no `DTEND`
-- **No `RRULE` / `RDATE`**: every date is a self-contained `VEVENT`
-- `TRANSP:TRANSPARENT` (does not block busy/free), `DTSTAMP` fixed at `20260101T000000Z`
-- Deterministic UIDs: `chinese-new-year-day2-2026@cn-holidays`; re-importing
-  the same file deduplicates by UID. Laba Festival occurs twice in
-  2041/2060/2068/2079/2098, so those UIDs get a month suffix
-  (`laba-festival-2041-01@…` / `laba-festival-2041-12@…`) to stay unique
-- Pure-ASCII content, CRLF line endings, every line ≤ 75 octets
-  (RFC 5545 folding rule)
-- Fixed event fields: `UID` / `DTSTAMP` / `DTSTART;VALUE=DATE` / `SUMMARY` /
-  `CATEGORIES` / `TRANSP:TRANSPARENT`
+Shared by both files:
+
+- `CALSCALE:GREGORIAN` / `VERSION:2.0` / `PRODID`
+- All-day events: `DTSTART;VALUE=DATE:YYYYMMDD` — no `TZID`, no `VTIMEZONE`, no
+  `DTEND` (a `DATE` value with no `DTEND` is a one-day event, RFC 5545 §3.6.1).
+  Date-only events are timezone-independent by construction, so nothing shifts
+  when the client sits in another zone.
+- **No `RRULE` / `RDATE`**: every occurrence is a self-contained `VEVENT`.
+- `TRANSP:TRANSPARENT` (holidays do not block busy/free time).
+- `DTSTAMP` fixed at `20260101T000000Z`, so regenerating yields a byte-identical file.
+- Deterministic UIDs such as `mlk-day-2026@us-holidays` or
+  `chinese-new-year-day2-2026@cn-holidays`; re-importing the same file
+  deduplicates by UID.
+- Pure ASCII, CRLF, every line ≤ 75 octets (RFC 5545 folding).
+- Fixed field set: `UID` / `DTSTAMP` / `DTSTART;VALUE=DATE` / `SUMMARY` /
+  `CATEGORIES` / `TRANSP:TRANSPARENT`.
+
+Two deliberate differences:
+
+- US events also carry a `DESCRIPTION` with the date rule, the weekday of the
+  occurrence, and any observed-date note.
+- The Chinese file declares `METHOD:PUBLISH`; the US file omits it, because a
+  bare data file should not look like a scheduling message.
 
 ## Usage
 
-**Subscribe (recommended)**: desktop client or
-mobile app → next to *Your Calendars* in the calendar sidebar, click `＋` →
-*From URL* → paste the public URL of the .ics → *Subscribe*. Subscribed
-calendars are read-only, fetched periodically by Tuta's servers, and alarms
-from external calendars are not synced.
+**Subscribe (recommended)** — desktop or mobile app → `＋` next to *Your
+Calendars* → *From URL* → paste a public URL below → *Subscribe*. Subscribed
+calendars are read-only, refreshed server-side, and do not sync alarms.
 
-**Import (works on the free plan)**: web app or desktop client → `⋯` next to
-the target calendar → *Import* → choose the .ics file. Import into a dedicated
-calendar (Tuta has no bulk event deletion); re-importing the same file creates
-no duplicates (UID dedup).
+**Import (works on the free plan)** — web or desktop app → `⋯` next to the
+target calendar → *Import* → pick the `.ics`. Import into a dedicated calendar:
+Tuta has no bulk event deletion. Re-importing the same file creates no
+duplicates (UID dedup).
 
-Other clients (Google Calendar "From URL", Apple/Outlook subscriptions, …)
-use the same URL.
+**Subscription URLs**
 
-## Deployment (getting a public subscription URL)
+```
+https://raw.githubusercontent.com/HumorSeth/cn-us-calendar/main/us-holidays-2026-2100.ics
+https://raw.githubusercontent.com/HumorSeth/cn-us-calendar/main/chinese-holidays-2026-2100.ics
 
-The URL must be publicly reachable without login (Tuta's servers fetch it).
-The `site/` directory is the deployment bundle
-
-1. **GitHub**: upload the files from `site/` to a public repo via the web UI,
-   then use the raw link or
-   `https://cdn.jsdelivr.net/gh/<user>/<repo>@main/<file>.ics`;
-2. **Cloudflare Pages**: Workers & Pages → Upload assets → drag in `site/` →
-   `https://<project>.pages.dev/<file>.ics`;
-3. **Self-hosted**: Caddy `file_server` or nginx (`text/calendar`, HTTPS).
-
-Step-by-step details in `site/README.md`.
-
-## Regenerating
-
-```bash
-pip install ephem lunardate cnlunar icalendar   # cnlunar/icalendar are for cross-checks
-python gen_cn_calendar.py
+# CDN mirror (faster in some regions)
+https://cdn.jsdelivr.net/gh/HumorSeth/cn-us-calendar@main/us-holidays-2026-2100.ics
+https://cdn.jsdelivr.net/gh/HumorSeth/cn-us-calendar@main/chinese-holidays-2026-2100.ics
 ```
 
-The script computes all dates, runs every check described above (non-zero
-exit on any failure), rewrites the ICS and CSV, and prints the 2026 detail,
-the list of 12 ephem-vs-HKO differences, and the CNY dates of the boundary
-years (2026 / 2033 / 2100). `sxtwl` has no prebuilt wheel for Python 3.14 and
-was therefore not used (its role is covered by lunardate + cnlunar + HKO).
+Other clients (Google Calendar "From URL", Apple/Outlook subscriptions) accept
+the same URLs.
+
+## Reproducibility
+
+There is no hidden data here: every rule needed to rebuild both files is in the
+tables above, and the observed-date rule plus the Easter computus are spelled
+out. The US file is produced by a ~200-line Python script that walks 2026–2100,
+computes each holiday, emits one `VEVENT` per day, and folds lines at 75 octets;
+the Chinese file additionally needs an ephemeris (`pyephem`) for the solar terms
+and a lunar-calendar library (`lunardate`, `cnlunar`) for the festivals, both
+cross-checked against the Hong Kong Observatory tables. Open an issue if you
+want the generator scripts committed here.
 
 ## Known limitations
 
-- Does **not** include the actual rest-day swaps and makeup workdays from
-  each year's State Council notice (published every November; would need an
-  annual append from 2027 on — a separate "this year's arrangement" calendar
-  can be built if needed).
-- No alarms (VALARM); Tuta does not sync alarms from subscriptions either —
-  import a VALARM-equipped build if you need reminders.
-- The 12 boundary-case solar terms follow the published HKO tables (see
-  above); far-future ΔT uncertainty is unavoidable.
-- The calendar marks the **festival days themselves** (statutory-festival
-  scope), not the consecutive rest-day arrangements.
+- **Chinese calendar**: marks the festival days themselves, not each year's
+  State Council rest-day swaps and makeup workdays (published every November).
+- **US calendar**: federal holidays only — no state-level holidays, no
+  early-closing or half-day events.
+- Neither file carries `VALARM`; Tuta does not sync alarms from subscriptions
+  either, so import a VALARM build if you need reminders.
+- Far-future dates: US rules are statutory and stable; Chinese solar terms
+  within 10 minutes of midnight follow the published HKO tables.
 
 ## Sources
 
-- [Notice of the General Office of the State Council on the 2026 Holiday Arrangement](http://www.scio.gov.cn/zdgz/jj/202511/t20251110_938367.html) (Chinese)
-- [Hong Kong Observatory Gregorian–Lunar Calendar Conversion Tables (1901–2100)](https://www.hko.gov.hk/en/gts/time/conversion.htm)
-  (this repo uses their per-year `T{year}e.txt` text tables)
-- Python libraries: `pyephem` (positional astronomy), `lunardate` /
-  `cnlunar` (Chinese lunar calendar), `icalendar` (RFC 5545 parsing checks)
+- US: [5 U.S.C. § 6103](https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title5-section6103),
+  [OPM federal holidays](https://www.opm.gov/policy-data-oversight/pay-leave/federal-holidays/),
+  `python-dateutil` (RRULE / Easter cross-checks), `icalendar` (RFC 5545 parsing)
+- China: [Notice of the General Office of the State Council on the 2026 Holiday
+  Arrangement](http://www.scio.gov.cn/zdgz/jj/202511/t20251110_938367.html),
+  [Hong Kong Observatory Gregorian–Lunar Conversion Tables (1901–2100)](https://www.hko.gov.hk/en/gts/time/conversion.htm),
+  `pyephem`, `lunardate`, `cnlunar`
+
+## License
+
+MIT — see [LICENSE](LICENSE).
